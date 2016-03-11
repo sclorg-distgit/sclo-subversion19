@@ -1,0 +1,12 @@
+[Unit]
+Description=Subversion protocol daemon
+After=syslog.target network.target
+
+[Service]
+Type=forking
+EnvironmentFile=/opt/rh/sclo-subversion19/root/etc/sysconfig/svnserve
+ExecStart=/opt/rh/sclo-subversion19/root/usr/sbin/svnserve-scl-wrapper --daemon --pid-file=/run/sclo-subversion19-svnserve/svnserve.pid $OPTIONS
+PrivateTmp=yes
+
+[Install]
+WantedBy=multi-user.target

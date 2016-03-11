@@ -1,0 +1,8 @@
+#!/bin/sh
+
+# We have to re-enable SCL environment, because /sbin/service
+# clears almost all environment variables.
+. /opt/rh/sclo-subversion19/enable
+export X_SCLS="$X_SCLS sclo-subversion19"
+
+exec /opt/rh/sclo-subversion/root/usr/bin/svnserve "$@"
