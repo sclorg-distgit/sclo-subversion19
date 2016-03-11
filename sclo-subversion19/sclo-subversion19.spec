@@ -13,7 +13,7 @@
 Summary: Package that installs %scl
 Name: %scl_name
 Version: 1.1
-Release: 1%{?dist}
+Release: 2%{?dist}
 Group: Applications/File
 Source0: README
 Source1: LICENSE
@@ -93,12 +93,13 @@ mkdir -p %{buildroot}%{_scl_scripts}/root
 %define ver_python 2.7
 %endif
 
+# ruby_vendorlibdir and python one not defined on 6 ..
 cat >> %{buildroot}%{_scl_scripts}/enable << EOF
 export PATH=%{_bindir}\${PATH:+:\${PATH}}
 export LIBRARY_PATH=%{_libdir}\${LIBRARY_PATH:+:\${LIBRARY_PATH}}
 export LD_LIBRARY_PATH=%{_libdir}\${LD_LIBRARY_PATH:+:\${LD_LIBRARY_PATH}}
-export PKG_CONFIG_PATH=%{_libdir}/pkgconfig\${PKG_CONFIG_PATH:+:\${PKG_CONFIG_PATH}}
-export MANPATH=%{_mandir}:\${MANPATH}
+export PERL5LIB=%{_scl_root}%{perl_vendorlib}\${PERL5LIB:+:\${PERL5LIB}}
+export MANPATH=%{_mandir}\${MANPATH:+:\${MANPATH}}
 export RUBYLIB=%{_libdir}/subversion/vendor_ruby\${RUBYLIB:+:\${RUBYLIB}}
 export PYTHONPATH=%{_libdir}/python%{ver_python}/site-packages\${PYTHONPATH:+:\${PYTHONPATH}}
 EOF
@@ -118,9 +119,9 @@ EOF
 
 %post runtime
 # Simple copy of context from system root to SC root.
-semanage fcontext -a -e / /opt/rh/%{scl_name}/root >/dev/null 2>&1 || :
+semanage fcontext -a -e / %{_scl_root} >/dev/null 2>&1 || :
+restorecon -R %{_scl_root} >/dev/null 2>&1 || :
 selinuxenabled && load_policy || :
-restorecon -R /opt/rh/%{scl_name}/root >/dev/null 2>&1 || :
 
 %files
 
@@ -136,7 +137,10 @@ restorecon -R /opt/rh/%{scl_name}/root >/dev/null 2>&1 || :
 %{_root_sysconfdir}/rpm/macros.%{scl_name_base}-scldevel
 
 %changelog
-* Mon Mar 07 2016 Jaroslaw Polok <jaroslaw.polok@cern.ch> 1.1
+* Fri Mar 11 2016 Jaroslaw Polok <jaroslaw.polok@cern.ch> 1.1-2
+- adding PERL5LIB, PYTHONPATH
+
+* Mon Mar 07 2016 Jaroslaw Polok <jaroslaw.polok@cern.ch> 1.1-1
 - adding LD_LIBRARY_PATH, selinux context mgmt.
 
 * Sat Mar 05 2016 Jaroslaw Polok <jaroslaw.polok@cern.ch> 1.0
