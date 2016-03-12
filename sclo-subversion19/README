@@ -1,7 +1,0 @@
-Package %{scl_name} provides Subversion delivered as a Software
-Collection. For more information about Software Collections,
-see the scl(1) man page. By installing the %{scl_name} collection,
-you will get the minimum working set of packages to have a working
-Subversion.
-
-Usage: scl enable %{scl}
