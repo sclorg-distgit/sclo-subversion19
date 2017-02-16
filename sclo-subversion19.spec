@@ -12,8 +12,8 @@
 
 Summary: Package that installs %scl
 Name: %scl_name
-Version: 1.1
-Release: 2%{?dist}
+Version: 1.2
+Release: 1%{?dist}
 Group: Applications/File
 Source0: README
 Source1: LICENSE
@@ -98,7 +98,7 @@ cat >> %{buildroot}%{_scl_scripts}/enable << EOF
 export PATH=%{_bindir}\${PATH:+:\${PATH}}
 export LIBRARY_PATH=%{_libdir}\${LIBRARY_PATH:+:\${LIBRARY_PATH}}
 export LD_LIBRARY_PATH=%{_libdir}\${LD_LIBRARY_PATH:+:\${LD_LIBRARY_PATH}}
-export PERL5LIB=%{_scl_root}%{perl_vendorlib}\${PERL5LIB:+:\${PERL5LIB}}
+export PERL5LIB=%{_scl_root}%{perl_vendorarch}\${PERL5LIB:+:\${PERL5LIB}}
 export MANPATH=%{_mandir}\${MANPATH:+:\${MANPATH}}
 export RUBYLIB=%{_libdir}/subversion/vendor_ruby\${RUBYLIB:+:\${RUBYLIB}}
 export PYTHONPATH=%{_libdir}/python%{ver_python}/site-packages\${PYTHONPATH:+:\${PYTHONPATH}}
@@ -137,6 +137,9 @@ selinuxenabled && load_policy || :
 %{_root_sysconfdir}/rpm/macros.%{scl_name_base}-scldevel
 
 %changelog
+* Thu Feb 16 2017 Jaroslaw Polok <jaroslaw.polok@cern.ch> 1.2-1
+- fix PERL5LIB to point to arch-dependent one.
+
 * Fri Mar 11 2016 Jaroslaw Polok <jaroslaw.polok@cern.ch> 1.1-2
 - adding PERL5LIB, PYTHONPATH
 
